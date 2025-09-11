@@ -1,39 +1,42 @@
-from bs4 import BeautifulSoup
 from utils import text_utils
+from utils import net_utils
 
-def get_title(soup: BeautifulSoup) -> str:
-    '''
-    Get the titile of the website
+class Crawler:
+    def __init__(self, URL):
+        '''
+        Pass in URL to the website to initiate BeautifulSoup object of the website
+        '''
+        self.soup = net_utils.get_html(URL=URL)
 
-    Argument:
-        soup (BeautifulSoup): DOM tree: respresentation of the HTML string
-    Return:
-        title (str): The title of the website
-    '''
+    def get_title(self) -> str:
+        '''
+        Get the title of the website
 
-    title = soup.find('title').get_text(strip=True)
-    return title
+        Return:
+            title (str): The title of the website
+        '''
 
-def get_paragraphs(soup: BeautifulSoup) -> str:
-    '''
-    Get the main content of the website
-    
-    Arguments:
-        soup (BeautifulSoup): DOM tree: respresentation of the HTML string
-    Return:
-        paragraphs (str): Main content of the website
-    '''
+        title = self.soup.find('title').get_text(strip=True)
+        return title
 
-    paragraphs = soup.find_all('p')
-    
-    # remove tag
-    tmp = []    # tag-free input paragraphs
-    for p in paragraphs:
-        tmp.append(p.get_text(strip=True))
+    def get_paragraph(self) -> str:
+        '''
+        Get the main content of the website
+        
+        Return:
+            paragraph (str): Main content of the website
+        '''
 
-    # get cleaned text
-    paragraphs = text_utils.clean_text(paragraphs=tmp)
+        paragraphs = self.soup.find_all('p')
+        
+        # remove tag
+        tmp = []    # tag-free input paragraphs
+        for p in paragraphs:
+            tmp.append(p.get_text(strip=True))
 
-    # concatenate list[str] into one str
-    paragraphs = ' '.join(paragraphs)
-    return paragraphs
+        # get cleaned text
+        paragraphs = text_utils.clean_text(paragraphs=tmp)
+
+        # concatenate list[str] into one str
+        paragraph = ' '.join(paragraphs)
+        return paragraph

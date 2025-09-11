@@ -1,16 +1,14 @@
-def save_to_txt(paragraphs: list[str]):
+def save_to_txt(paragraph: str):
     '''
-    Save the input list of paragraphs into .txt file
+    Save the paragraph into .txt file
 
     Arguments:
-        paragraphs (list[str]): A list of text
+        paragraph (list[str]): A list of text
     Return:
-        .txt file concatenated all text in paragraphs with seperator
+        .txt file contain the input paragraph
     '''
 
-    seperator = '\n'
     with open('prgs.txt', 'w', encoding='utf-8') as f:
-        for paragraph in paragraphs:
-            f.write(paragraph + seperator)
+        f.write(paragraph)
 
 #todo: implement save to json
