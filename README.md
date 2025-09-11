@@ -1,0 +1,2 @@
+# LazyNews
+vietnam newspaper summarizer
