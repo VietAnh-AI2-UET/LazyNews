@@ -3,9 +3,10 @@ def clean_text(paragraphs: list[str]) -> list[str]:
     Remove unnecessary elements in input list of paragraphs,
     keep only the main content of the website
 
-    Arguments:
+    Args:
         paragraphs (list[str]): A list of text
-    Return:
+    
+    Returns:
         clean_paragraphs (list[str]): A cleaned version of input paragraphs,
                                       removed paragraphs that contain text in noise_keywords
     '''

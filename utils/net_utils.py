@@ -5,10 +5,11 @@ def get_html(URL: str) -> BeautifulSoup:
     '''
     Get the HTML presentation of the website
 
-    Argument:
+    Args:
         URL (str): the URL to the news website
-    Return:
-        soup (BeautifulSoup): DOM tree respresentation of the HTML string
+    
+    Returns:
+        soup (BeautifulSoup): Parsed HTML of a given URL
     '''
 
     response = requests.get(URL)

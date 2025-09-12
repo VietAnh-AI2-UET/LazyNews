@@ -1,17 +1,12 @@
-from utils import file_utils
 from core.scraper import crawler
 from core.model import summarizer
 
-URL = 'https://vietnamnet.vn/vu-2-anh-em-bi-danh-nhap-vien-khi-cuu-nguoi-ke-duoc-giup-do-hanh-hung-an-nhan-2441318.html'
+URL = 'https://vietnamnet.vn/my-he-lo-them-hinh-anh-treo-thuong-100-000-usd-tim-ke-am-sat-charlie-kirk-2441707.html'
 
 news = crawler.Crawler(URL=URL)
-title = news.get_title()
-paragraph = news.get_paragraph()
 
-print(title)
-
-# save to txt
-file_utils.save_to_txt(paragraph=paragraph)
+# get content and save to json
+news.get_news()
 
 # Read text from .txt file
 un_summary_prgs = []
@@ -21,5 +16,5 @@ with open('prgs.txt', 'r', encoding='utf-8') as f:
 
 sumarization_model = summarizer.Summarizer()
 
-summary = sumarization_model.get_summarize(input_text=un_summary_prgs)
+summary = sumarization_model.get_summaries(paragraphs=un_summary_prgs)
 print('Tóm tắt:', summary)
