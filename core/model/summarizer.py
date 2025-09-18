@@ -60,7 +60,7 @@ class Summarizer:
         summary_ids = self.model.generate(
             model_input['input_ids'],
             max_length=200,      # Độ dài tối đa của summary
-            min_length=50,      # Độ dài tối thiểu
+            min_length=30,      # Độ dài tối thiểu
             length_penalty=1.0,
             num_beams=6,
             early_stopping=True

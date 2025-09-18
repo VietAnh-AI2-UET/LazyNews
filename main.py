@@ -2,7 +2,7 @@ from core.scraper import crawler
 from core.model import summarizer
 from utils.text_utils import chunk_text
 
-URL = 'https://vietnamnet.vn/ukraine-co-them-dot-pha-gan-pokrovsk-neu-thoi-diem-nga-tan-cong-dot-moi-2392465.html'
+URL = 'https://vietnamnet.vn/trung-quoc-phan-ung-truoc-tuyen-bo-cua-my-lien-quan-toi-xung-dot-nga-ukraine-2442829.html'
 
 news = crawler.Crawler(URL=URL)
 
@@ -20,4 +20,6 @@ with open('prgs.txt', 'r', encoding='utf-8') as f:
 sumarization_model = summarizer.Summarizer()
 
 summary = sumarization_model.get_summaries(paragraph=text)
-print('Tóm tắt:', summary)
+print('Tóm tắt:')
+for s in summary:
+    print(s + '\n')

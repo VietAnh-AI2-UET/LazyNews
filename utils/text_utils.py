@@ -20,23 +20,22 @@ def clean_text(paragraphs: list[str]) -> list[str]:
             clean_paragraphs.append(p)
     return clean_paragraphs
 
-def chunk_text(paragraph: str, chunk_size=50) -> list[str]:
+def chunk_text(paragraph: str) -> list[str]:
     """
-    Split a paragraph into smaller text chunks based on word count.
+    Split a paragraph into three word-based chunks.
 
-    The paragraph is tokenized into words using whitespace. Then, words are grouped
-    sequentially into chunks of up to `chunk_size` words. The last chunk may contain
-    fewer words if the total is not divisible by `chunk_size`.
+    The text is split by whitespace, then divided into three parts 
+    of roughly equal word count.
 
     Args:
-        paragraph (str): The input paragraph to be split.
-        chunk_size (int, optional): Maximum number of words in each chunk. Defaults to 400.
+        paragraph (str): The input paragraph.
 
     Returns:
-        list[str]: A list of text chunks.
+        chunks (list[str]): A list of three text chunks.
     """
     
     words = paragraph.split()
+    chunk_size = len(words) // 3
     chunks, current = [], []
     for word in words:
         current.append(word)
