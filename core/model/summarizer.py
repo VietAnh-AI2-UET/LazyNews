@@ -1,4 +1,5 @@
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
+from utils import text_utils
 
 class Summarizer:
     '''
@@ -18,6 +19,20 @@ class Summarizer:
         model_name = "VietAI/vit5-base-vietnews-summarization"
         self.tokenizer = AutoTokenizer.from_pretrained(model_name)
         self.model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
+
+    def get_chunks_prgs(self, paragraph: str) -> list[str]:
+        '''
+        Chunking the input paragraph
+
+        Args:
+            paragraph (str): Input paragraph
+
+        Returns:
+            chunks (list[str]): List of text chunks
+        '''
+        
+        chunks = text_utils.chunk_text(paragraph=paragraph)
+        return chunks
 
     def generate_summary_ids(self, paragraphs: list[str]) -> list[str]:
         '''
@@ -65,42 +80,18 @@ class Summarizer:
         '''
         
         return [self.tokenizer.decode(ids, skip_special_tokens=True) for ids in summary_ids]
-    
-    # def set_summaries(self, paragraphs: list[str]):
-    #     '''
-    #     Summarize a list of paragraphs into shorter text.
 
-    #     Args:
-    #         paragraphs (list[str]): Input paragraphs to be summarized.
-    #     '''
-
-    #     summary_ids = self.generate_summary_ids(paragraphs=paragraphs)
-    #     self.summaries = self.decode_summary(summary_ids=summary_ids)
-    
-    # def get_summaries(self) -> list[str]:
-    #     '''
-    #     Get summarized list of text
-
-    #     Returns:
-    #         self.summaries (list[str]): List of text summaries
-    #     '''
-        
-    #     return self.summaries
-
-    def get_summaries(self, paragraphs: list[str]) -> list[str]:
+    def get_summaries(self, paragraph: str) -> list[str]:
         '''
         Summarize a list of paragraphs into shorter text
 
         Args:
-            paragraphs (list[str]): Input paragraphs to be summarized
+            paragraphs (str): Input paragraphs to be summarized
 
         Returns:
             self.summaries (list[str]): List of text summaries
         '''
-        
-        summary_ids = self.generate_summary_ids(paragraphs=paragraphs)
+        chunks = self.get_chunks_prgs(paragraph=paragraph)
+        summary_ids = self.generate_summary_ids(paragraphs=chunks)
         self.summaries = self.decode_summary(summary_ids=summary_ids)
         return self.summaries
-
-# todo: implement chunking methode for class Summarizer
-# def get_chunking_prgs(text: str) -> list[str]:
