@@ -91,6 +91,7 @@ class Summarizer:
         Returns:
             self.summaries (list[str]): List of text summaries
         '''
+        
         chunks = self.get_chunks_prgs(paragraph=paragraph)
         summary_ids = self.generate_summary_ids(paragraphs=chunks)
         self.summaries = self.decode_summary(summary_ids=summary_ids)
