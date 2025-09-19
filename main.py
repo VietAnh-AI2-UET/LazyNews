@@ -14,17 +14,14 @@ title = news.get_title()
 print(title)
 
 # Read text from .txt file
+texts = []
 with open('prgs.txt', 'r', encoding='utf-8') as f:
-    text = f.read()
+    for line in f:
+        texts.append(line)
 
 sumarization_model = summarizer.Summarizer()
 
-summary = sumarization_model.get_summaries(paragraph=text)
+summary = sumarization_model.get_summaries(paragraphs=texts)
 print('Tóm tắt:')
 for s in summary:
-    print(s + '\n')
-
-# chunks = chunk_text(paragraph=text)
-# # print(chunks)
-# for chunk in chunks:
-#     print(chunk + '\n')
+    print(s)

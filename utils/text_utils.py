@@ -33,10 +33,6 @@ def chunk_text(paragraph: str) -> list[str]:
     Returns:
         list[str]: A list of text chunks
     """
-
-# todo: upgrade chunking methode
-# <400 words: split into 3 chunks
-# >=400 words: 200 words per chunks
     
     words = paragraph.split()
 

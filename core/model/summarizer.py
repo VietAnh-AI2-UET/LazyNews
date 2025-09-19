@@ -20,7 +20,7 @@ class Summarizer:
         self.tokenizer = AutoTokenizer.from_pretrained(model_name)
         self.model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
 
-    def get_chunks_prgs(self, paragraph: str) -> list[str]:
+    def get_chunks_prgs(self, paragraphs: list[str]) -> list[list[str]]:
         '''
         Chunking the input paragraph
 
@@ -28,11 +28,11 @@ class Summarizer:
             paragraph (str): Input paragraph
 
         Returns:
-            chunks (list[str]): List of text chunks
+            multi_chunks (list[list[str]]): List of text chunks
         '''
         
-        chunks = text_utils.chunk_text(paragraph=paragraph)
-        return chunks
+        multi_chunks = [text_utils.chunk_text(paragraph=paragraph) for paragraph in paragraphs]
+        return multi_chunks
 
     def generate_summary_ids(self, paragraphs: list[str]) -> list[str]:
         '''
@@ -81,18 +81,18 @@ class Summarizer:
         
         return [self.tokenizer.decode(ids, skip_special_tokens=True) for ids in summary_ids]
 
-    def get_summaries(self, paragraph: str) -> list[str]:
+    def get_summaries(self, paragraphs: list[str]) -> list[list[str]]:
         '''
         Summarize a list of paragraphs into shorter text
 
         Args:
-            paragraphs (str): Input paragraphs to be summarized
+            paragraphs (list[str]): List of input paragraphs to be summarized
 
         Returns:
-            self.summaries (list[str]): List of text summaries
+            self.summaries (list[list[str]]): List of list of text summaries
         '''
         
-        chunks = self.get_chunks_prgs(paragraph=paragraph)
-        summary_ids = self.generate_summary_ids(paragraphs=chunks)
-        self.summaries = self.decode_summary(summary_ids=summary_ids)
+        multi_chunks = self.get_chunks_prgs(paragraphs=paragraphs)
+        summary_ids = [self.generate_summary_ids(paragraphs=chunks) for chunks in multi_chunks]
+        self.summaries = [self.decode_summary(summary_ids=summary_id) for summary_id in summary_ids]
         return self.summaries
