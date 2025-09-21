@@ -34,7 +34,7 @@ class Summarizer:
         multi_chunks = [text_utils.chunk_text(paragraph=paragraph) for paragraph in paragraphs]
         return multi_chunks
 
-    def generate_summary_ids(self, paragraphs: list[str]) -> list[str]:
+    def generate_summary_ids(self, paragraphs: list[str]):
         '''
         Generate token IDs representing summaries for a list of input paragraphs.
 

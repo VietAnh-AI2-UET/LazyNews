@@ -14,21 +14,13 @@ def save_to_txt(paragraph: str):
     with open('prgs.txt', 'w', encoding='utf-8') as f:
         f.write(paragraph)
 
-def save_to_json(title: str, paragraph: str):
+def save_to_json(data: dict):
     '''
-    Save the input paragraph corresponding to its title into .json file
+    Save the input dictionary to .json file
 
     Args:
-        title (str): The title of the paragraph
-        paragraph (str): A paragraph
-
-    Notes:
-        This function will create a .json file
-        contain the input paragraph with its title
+        data (dict): Dictionary to be saved
     '''
 
-    content = {
-        title: paragraph
-    }
-    with open('prgs.json', 'w', encoding='utf-8') as f:
-        json.dump(content, f, ensure_ascii=False, indent=4)
+    with open('today_news.json', 'w', encoding='utf-8') as f:
+        json.dump(data, f, ensure_ascii=False, indent=4)

@@ -1,24 +1,21 @@
-def clean_text(paragraphs: list[str]) -> list[str]:
+def is_clean_text(paragraph: str) -> bool:
     '''
-    Remove unnecessary elements in input list of paragraphs,
-    keep only the main content of the website
+    Checking validation of input paragraph,
+    return False if any word is in noise_keyword
 
     Args:
-        paragraphs (list[str]): A list of text
+        paragraph (str): A paragraph of text
     
     Returns:
-        clean_paragraphs (list[str]): A cleaned version of input paragraphs,
-                                      removed paragraphs that contain text in noise_keywords
+        bool: True if input paragraph is valid. Otherwise, False
     '''
 
     noise_keywords = ["xem thêm", "ảnh:", "tác giả", "nguồn:", "copyright"]
 
-    clean_paragraphs = []
     min_len = 30    # minimum length of each paragraph
-    for p in paragraphs:
-        if len(p) >= min_len and not any(kw in p.lower() for kw in noise_keywords):
-            clean_paragraphs.append(p)
-    return clean_paragraphs
+    if len(paragraph) >= min_len and not any(kw in paragraph.lower() for kw in noise_keywords):
+            return True
+    return False
 
 def chunk_text(paragraph: str) -> list[str]:
     """
