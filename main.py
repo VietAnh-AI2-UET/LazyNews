@@ -22,28 +22,21 @@ for URL in URLs:
 save_to_json(file_name='today_news.json', data=today_news)
 
 # read from json
-paragraphs = []
 with open('today_news.json', 'r', encoding='utf-8') as f:
     data = json.load(f)
-
-for url, content in data.items():
-    paragraphs.append(content['main_content'])
 
 # initialize summarizer object
 summary_model = summarizer.Summarizer()
 
-# feed paragraph into model
-summaries = [summary_model.get_summary(paragraph=paragraph) for paragraph in paragraphs]
-
 # create a dict for summary paragraphs
 today_news_summary = {}
-i = 0
 for URL in URLs:
+    paragraph = data[URL]['main_content']
+    summary = summary_model.get_summary(paragraph=paragraph)
     today_news_summary[URL] = {
         'title': today_news[URL]['title'],
-        'summary': summaries[i]
+        'summary': summary
     }
-    i += 1
 
 # save to another .json file
 save_to_json(file_name='today_news_summary.json', data=today_news_summary)
