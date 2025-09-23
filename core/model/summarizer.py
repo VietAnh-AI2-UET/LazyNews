@@ -15,8 +15,9 @@ class Summarizer:
         Initialize summarization and tokenizer
         '''
 
-        self._model: AutoModelForSeq2SeqLM | None = None
-        self._tokenizer: AutoTokenizer | None = None            
+        model_name = 'VietAI/vit5-base-vietnews-summarization'
+        self._model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
+        self._tokenizer = AutoTokenizer.from_pretrained(model_name)             
 
     @property
     def model(self) -> AutoModelForSeq2SeqLM | None:

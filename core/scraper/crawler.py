@@ -103,7 +103,7 @@ class Crawler:
         
         return ' '.join(main_content)
     
-    def get_news(self, URL: str):
+    def get_news(self, URL: str) -> None:
         '''
         Search web, find and clean title and main content of the website,
         Set attributes for this object
