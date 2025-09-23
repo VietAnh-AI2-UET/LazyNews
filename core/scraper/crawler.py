@@ -101,7 +101,7 @@ class Crawler:
             print('Nothing in main_content')
             return None
         
-        return ' '.join(main_content)
+        return '\n'.join(main_content)
     
     def get_news(self, URL: str) -> None:
         '''
