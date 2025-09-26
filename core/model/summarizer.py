@@ -24,6 +24,7 @@ class Summarizer:
         '''
         Get the model
         '''
+
         if not self._model:
             return None
         

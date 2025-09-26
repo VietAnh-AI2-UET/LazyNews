@@ -9,7 +9,7 @@ def get_html(URL: str) -> BeautifulSoup:
         URL (str): the URL to the news website
     
     Returns:
-        soup (BeautifulSoup): Parsed HTML of a given URL
+        BeautifulSoup: Parsed HTML of a given URL
     '''
 
     response = requests.get(URL)

@@ -26,7 +26,7 @@ class Crawler:
         self._main_content: str | None = None
 
         if URL:
-            self.get_news(URL=URL)
+            self.get_main_content(URL=URL)
 
 
     @property
@@ -78,7 +78,7 @@ class Crawler:
             return title
         
         except Exception as e:
-            print('Title not exist')
+            print('No title found')
             print(f'Exception: {e}')
             return None
         
@@ -103,7 +103,7 @@ class Crawler:
         
         return '\n'.join(main_content)
     
-    def get_news(self, URL: str) -> None:
+    def get_main_content(self, URL: str) -> None:
         '''
         Search web, find and clean title and main content of the website,
         Set attributes for this object
