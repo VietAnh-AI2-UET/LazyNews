@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup
 from bs4.element import Tag
-from datetime import datetime, timedelta
+from urllib.parse import urljoin
 from utils import net_utils
 
 class News_finder:
@@ -77,7 +77,7 @@ class News_finder:
     
     def _extract_href(self, tag_anchors: list[Tag] | None) -> list[str] | None:
         '''
-        Find and extract the href attributes if availble
+        Find and extract the 'href' attributes if availble
 
         Arguments:
             tag_anchors (list[Tag] | None): List of <a> elements if found
@@ -91,10 +91,28 @@ class News_finder:
             hrefs.append(tag_anchor['href'])
 
         return hrefs
+    
+    def _join_url(self, href: str | None) -> str:
+        '''
+        Complete the URL to the website
+
+        Arguments:
+            href (str): relative URL to the news
+
+        Returns:
+            str: Absolute URL to the news
+        '''
+        
+        base_url = 'https://vietnamnet.vn/'
+        return urljoin(base=base_url, url=href)
         
     def get_news(self, source='https://vietnamnet.vn/tin-moi-nong'):
         self._soup = self._fetch_html(URL=source)
         tag_header = self._extract_header_tag()
         tag_anchors = self._extract_anchor_tag(tag_headers=tag_header)
         hrefs = self._extract_href(tag_anchors=tag_anchors)
+
+        for i in range(len(hrefs)):
+            hrefs[i] = self._join_url(href=hrefs[i])
+
         return hrefs
