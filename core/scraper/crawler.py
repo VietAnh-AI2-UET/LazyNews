@@ -6,10 +6,10 @@ class Crawler:
     A web crawler that fetches and processes website content
 
     Attributes:
-        URL (str): Link to the website
-        soup (BeautifulSoup): Parsed HTML of a given URL
-        title (str): The title of the given URL
-        main_content (str): Main cleaned text content of the given URL
+        _URL (str): Link to the website
+        _soup (BeautifulSoup): Parsed HTML of a given URL
+        _title (str): The title of the given URL
+        _main_content (str): Main cleaned text content of the given URL
     '''
 
     def __init__(self, URL: str | None = None):
@@ -98,7 +98,7 @@ class Crawler:
                 main_content.append(p)
 
         if not main_content:
-            print('Nothing in main_content')
+            print('This website does not contain any paragraph')
             return None
         
         return '\n'.join(main_content)

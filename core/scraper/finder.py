@@ -3,71 +3,65 @@ from bs4.element import Tag
 from urllib.parse import urljoin
 from utils import net_utils
 
-class News_finder:
+class NewsFinder:
     '''
     An Agent that searching for recently breaking news
 
     Attributes:
-        soup (BeautifulSoup): Parsed HTML of a given URL
-        URLs (list[str]): List of URL to recently breaking news
+        _BASE_URL (str): The website where this agent get information from
+        _soup (BeautifulSoup): Parsed HTML of a given URL
     '''
     def __init__(self):
         '''
-        Initialize News_Finder object
+        Initialize NewsFinder object
         '''
 
+        self._BASE_URL = 'https://vietnamnet.vn/'
         self._soup: BeautifulSoup | None = None
-        self._URLs: list[str] | None = None
 
+    @property
+    def BASE_URL(self):
+        return self.BASE_URL
+    
     @property
     def soup(self):
         raise AttributeError('Direct access to soup is not allowed')
 
-    def _fetch_html(self, URL: str ):
+    def _fetch_html(self, URL: str) -> BeautifulSoup:
         '''
         Fetch and return Bs4 object of the website
         '''
 
         return net_utils.get_html(URL=URL)
     
-    def _extract_header_tag(self) -> list[Tag] | None:
+    def _extract_header_tag(self) -> list[Tag]:
         '''
-        Find and extract the <h2> and <h3> elements if availble
+        Find and extract the <h2> and <h3> tags if availble
 
         Returns:
-            list[Tag] | None: List of <h2> and <h3> elements if found  
+            list[Tag]: List of <h2> and <h3>
         '''
         
         if not self._soup:
-            return None
-        
-        try:
-            tag_h2 = self._soup.find_all('h2', class_='horizontalPost__main-title vnn-title title-bold')
-            tag_h3 = self._soup.find_all('h3', class_='horizontalPost__main-title vnn-title title-bold')
+            return []
 
-            tag_headers = list(tag_h2) + list(tag_h3)
+        tag_h2 = self._soup.find_all('h2', class_='horizontalPost__main-title vnn-title title-bold')
+        tag_h3 = self._soup.find_all('h3', class_='horizontalPost__main-title vnn-title title-bold')
+
+        tag_headers = list(tag_h2) + list(tag_h3)
+    
+        return tag_headers
         
-            return tag_headers
-        
-        except Exception as e:
-            print('No header tag found')
-            print(f'Exception" {e}')
-        
-            return None
-        
-    def _extract_anchor_tag(self, tag_headers: list[Tag] | None) -> list[Tag] | None:
+    def _extract_anchor_tag(self, tag_headers: list[Tag]) -> list[Tag]:
         '''
-        Find and extract the <a> elements if availble
+        Find and extract the <a> tag inside given header tags
 
         Arguments:
-            tag_headers (list[Tag] | None): List of <h2> and <h3> elements if found
+            tag_headers (list[Tag]): List of header tags
 
         Returns:
-            list[Tag] | None: List of <a> elements if found
+            list[Tag]: List of <a> elements
         '''
-        
-        if not tag_headers:
-            return None
         
         tag_anchors = []
         for header in tag_headers:
@@ -75,15 +69,15 @@ class News_finder:
         
         return tag_anchors
     
-    def _extract_href(self, tag_anchors: list[Tag] | None) -> list[str] | None:
+    def _extract_href(self, tag_anchors: list[Tag]) -> list[str]:
         '''
-        Find and extract the 'href' attributes if availble
+        Find and extract the 'href' attributes from <a> tags
 
         Arguments:
-            tag_anchors (list[Tag] | None): List of <a> elements if found
+            tag_anchors (list[Tag]): List of <a> elements if found
 
         Returns:
-            list[str] | None: List of href attribute in <a> element if found
+            list[str]: List of href attribute in <a> element if found
         '''
         
         hrefs = []
@@ -92,7 +86,7 @@ class News_finder:
 
         return hrefs
     
-    def _join_url(self, href: str | None) -> str:
+    def _join_url(self, href: str) -> str:
         '''
         Complete the URL to the website
 
@@ -103,8 +97,7 @@ class News_finder:
             str: Absolute URL to the news
         '''
         
-        base_url = 'https://vietnamnet.vn/'
-        return urljoin(base=base_url, url=href)
+        return urljoin(base=self._BASE_URL, url=href)
         
     def get_news(self, source='https://vietnamnet.vn/tin-moi-nong'):
         self._soup = self._fetch_html(URL=source)
