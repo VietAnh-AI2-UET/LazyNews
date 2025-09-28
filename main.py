@@ -7,42 +7,41 @@ news_finder = finder.NewsFinder()
 
 URLs = news_finder.get_news()
 
-website = crawler.Crawler()
-today_news = {}
+web_crawler = crawler.Crawler()
+breaking_news = {}
 
 for URL in URLs:
-    website.get_main_content(URL=URL)
-    title = website.title
-    main_content = website.main_content
-    
-    if not main_content:
-        continue
-
-    today_news[URL] = {
+    web_crawler.fetch_html(URL=URL)
+    title = web_crawler.get_title()
+    main_content = web_crawler.get_main_content()
+    breaking_news[URL] = {
         'title': title,
-        'main_content': main_content 
+        'main_content': main_content
     }
 
-save_to_json(file_name='today_news.json', data=today_news)
-print('Today news saved to today_news.json')
+# save news to .json file
+breaking_news_file = 'today_news.json'
+save_to_json(file_name=breaking_news_file, data=breaking_news)
+print(f"Today news saved to '{breaking_news_file}'")
 
-# # read from json
-# with open('today_news.json', 'r', encoding='utf-8') as f:
-#     data = json.load(f)
+# read from json
+with open(breaking_news_file, 'r', encoding='utf-8') as f:
+    data = json.load(f)
 
-# # initialize summarizer object
-# summary_model = summarizer.Summarizer()
+# initialize summarizer object
+summary_model = summarizer.Summarizer()
 
-# # create a dict for summary paragraphs
-# today_news_summary = {}
-# for URL in URLs:
-#     paragraph = data[URL]['main_content']
-#     summary = summary_model.get_summary(paragraph=paragraph)
-#     today_news_summary[URL] = {
-#         'title': today_news[URL]['title'],
-#         'summary': summary
-#     }
+# create a dict for summary paragraphs
+today_news_summary = {}
+for URL in URLs:
+    paragraph = data[URL]['main_content']
+    summary = summary_model.get_summary(paragraph=paragraph)
+    today_news_summary[URL] = {
+        'title': data[URL]['title'],
+        'summary': summary
+    }
 
-# # save to another .json file
-# save_to_json(file_name='today_news_summary.json', data=today_news_summary)
-# print('Today news summary saved to today_news_summary.json')
+# save to another .json file
+summary_file = 'today_news_summary.json'
+save_to_json(file_name=summary_file, data=today_news_summary)
+print(f"Today news summary saved to '{summary_file}'")
