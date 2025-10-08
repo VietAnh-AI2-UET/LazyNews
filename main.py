@@ -1,3 +1,6 @@
+# this version take 5 minutes to run
+
+
 import json
 from core.scraper import crawler, finder
 from core.model import summarizer
