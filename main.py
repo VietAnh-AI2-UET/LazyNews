@@ -17,10 +17,12 @@ for URL in URLs:
     web_crawler.fetch_html(URL=URL)
     title = web_crawler.get_title()
     main_content = web_crawler.get_main_content()
-    breaking_news[URL] = {
-        'title': title,
-        'main_content': main_content
-    }
+    # this will fix the 'no content' problem
+    if main_content:
+        breaking_news[URL] = {
+            'title': title,
+            'main_content': main_content
+        }
 
 # save news to .json file
 breaking_news_file = 'today_news.json'
@@ -36,7 +38,7 @@ summary_model = summarizer.Summarizer()
 
 # create a dict for summary paragraphs
 today_news_summary = {}
-for URL in URLs:
+for URL in list(data.keys()):
     paragraph = data[URL]['main_content']
     summary = summary_model.get_summary(paragraph=paragraph)
     today_news_summary[URL] = {
