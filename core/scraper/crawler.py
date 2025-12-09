@@ -76,7 +76,7 @@ class Crawler:
         
         return '\n'.join(main_content)
     
-    def fetch_html(self, URL: str) -> str:
+    def fetch_html(self, URL: str) -> None:
         '''
         Set the _URL and _soup attributes for this object
         
