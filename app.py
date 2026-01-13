@@ -1,7 +1,6 @@
 import streamlit as st
-import time
-import crawl_runner
-import summary_runner
+from core.runner import crawl_runner
+from core.runner import  summary_runner
 
 # ================== HEADER ==================
 left, center, right = st.columns([1, 1, 1])
