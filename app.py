@@ -23,10 +23,13 @@ if not st.session_state.collected:
 
         news_content_list = []
         news_title_list = []
+        news_url_list = []
 
         for url, d in breaking.items():
             title = d.get('title', '').strip()
             main = d.get('main_content', '').strip()
+            # keep original URL so summaries can use it as the document _id
+            news_url_list.append(url)
             if title:
                 news_title_list.append(title)
             if main:
@@ -54,6 +57,7 @@ if not st.session_state.collected:
 
         st.session_state.news_content_raw = news_content_list
         st.session_state.news_title_raw = news_title_list
+        st.session_state.news_url_raw = news_url_list
 
         # initialize raw text widgets so behavior matches the "Thu thập lại" branch
         for i, s in enumerate(st.session_state.news_content_raw, start=1):
@@ -76,10 +80,12 @@ else:
 
         news_content_list = []
         news_title_list = []
+        news_url_list = []
 
         for url, d in breaking.items():
             title = d.get('title', '').strip()
             main = d.get('main_content', '').strip()
+            news_url_list.append(url)
             if title:
                 news_title_list.append(title)
             if main:
@@ -108,6 +114,7 @@ else:
         # Ghi đè trực tiếp vào session_state để bắt buộc widget hiển thị giá trị này
         st.session_state.news_content_raw = news_content_list
         st.session_state.news_title_raw = news_title_list
+        st.session_state.news_url_raw = news_url_list
         for i, s in enumerate(st.session_state.news_content_raw, start=1):
             st.session_state[f"raw_{i}"] = s
 
@@ -136,7 +143,8 @@ else:
             data_for_summary = {}
             for i, content in enumerate(st.session_state.news_content_raw, start=1):
                 title = st.session_state.news_title_raw[i-1] if 'news_title_raw' in st.session_state and len(st.session_state.news_title_raw) >= i else ''
-                data_for_summary[f"local_{i}"] = {'title': title, 'main_content': content}
+                url = st.session_state.news_url_raw[i-1] if 'news_url_raw' in st.session_state and len(st.session_state.news_url_raw) >= i else f"local_{i}"
+                data_for_summary[url] = {'title': title, 'main_content': content}
 
             try:
                 breaking_summary = summary_runner.run_summary(data=data_for_summary, save_file="today_news_summary.json")
@@ -188,7 +196,8 @@ else:
             data_for_summary = {}
             for i, content in enumerate(st.session_state.news_content_raw, start=1):
                 title = st.session_state.news_title_raw[i-1] if 'news_title_raw' in st.session_state and len(st.session_state.news_title_raw) >= i else ''
-                data_for_summary[f"local_{i}"] = {'title': title, 'main_content': content}
+                url = st.session_state.news_url_raw[i-1] if 'news_url_raw' in st.session_state and len(st.session_state.news_url_raw) >= i else f"local_{i}"
+                data_for_summary[url] = {'title': title, 'main_content': content}
 
             try:
                 breaking_summary = summary_runner.run_summary(data=data_for_summary, save_file="today_news_summary.json")

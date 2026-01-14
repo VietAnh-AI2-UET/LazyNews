@@ -1,5 +1,5 @@
 from core.scraper import crawler, finder
-from utils.file_utils import save_to_json
+from utils.db_utils import save_news
 
 
 def run_crawl(save_file: str = 'today_news.json') -> dict:
@@ -23,8 +23,9 @@ def run_crawl(save_file: str = 'today_news.json') -> dict:
                 'main_content': main_content
             }
 
-    save_to_json(file_name=save_file, data=breaking_news)
-    print(f"Today news saved to '{save_file}'")
+    # persist to MongoDB
+    save_news(breaking_news)
+    print("Today news saved to MongoDB (collection 'news')")
     return breaking_news
 
 

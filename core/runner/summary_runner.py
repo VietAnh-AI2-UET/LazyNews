@@ -1,7 +1,6 @@
-import json
 import streamlit as st
 from core.model import summarizer
-from utils.file_utils import save_to_json
+from utils.db_utils import get_news, save_summary
 
 
 @st.cache_resource
@@ -20,10 +19,9 @@ def run_summary(data: dict | None = None, save_file: str = 'today_news_summary.j
     Returns a mapping URL -> {'title': str, 'summary': str} and saves to `save_file`.
     """
 
-    # read from json if no data provided
+    # read from MongoDB if no data provided
     if data is None:
-        with open("today_news.json", 'r', encoding='utf-8') as f:
-            data = json.load(f)
+        data = get_news()
 
     # initialize (cached) summarizer object
     summary_model = get_summarizer()
@@ -45,9 +43,8 @@ def run_summary(data: dict | None = None, save_file: str = 'today_news_summary.j
             'summary': summary
         }
 
-    # save to another .json file
-    summary_file = save_file
-    save_to_json(file_name=summary_file, data=today_news_summary)
-    print(f"Today news summary saved to '{summary_file}'")
+    # persist summaries to MongoDB
+    save_summary(today_news_summary)
+    print("Today news summary saved to MongoDB (collection 'summaries')")
 
     return today_news_summary
